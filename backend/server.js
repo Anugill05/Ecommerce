@@ -210,7 +210,7 @@ app.use(helmet({
 }));
 
 app.use(cors({
-  origin:       process.env.CLIENT_URL || "http://localhost:3000",
+  origin:       process.env.CLIENT_URL || "https://ecommerce-1-tlbi.onrender.com",
   credentials:  true,
   methods:      ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
   allowedHeaders: ["Content-Type", "Authorization"],
