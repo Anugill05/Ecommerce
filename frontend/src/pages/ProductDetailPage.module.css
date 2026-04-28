@@ -1,0 +1,96 @@
+.page { padding: 28px 0 48px; }
+.layout { display: grid; grid-template-columns: 480px 1fr; gap: 32px; align-items: start; }
+
+/* Images */
+.imageSection { position: sticky; top: calc(var(--nav-height) + 20px); }
+.mainImage {
+  position: relative; background: var(--bg-white); border-radius: var(--radius-md);
+  box-shadow: var(--shadow-sm); overflow: hidden; aspect-ratio: 1;
+}
+.mainImage img { width: 100%; height: 100%; object-fit: contain; padding: 16px; }
+.liveChip {
+  position: absolute; top: 12px; left: 12px;
+  background: linear-gradient(135deg, #ff6161, #ff9800); color: #fff;
+  font-size: 11px; font-weight: 800; padding: 4px 10px; border-radius: 3px;
+  text-transform: uppercase; letter-spacing: 1px;
+}
+.thumbRow { display: flex; gap: 8px; margin-top: 10px; }
+.thumb {
+  width: 64px; height: 64px; border-radius: var(--radius-sm); border: 2px solid var(--border);
+  background: var(--bg-white); overflow: hidden; cursor: pointer; transition: var(--transition);
+}
+.thumb img { width: 100%; height: 100%; object-fit: contain; padding: 4px; }
+.thumbActive { border-color: var(--primary); }
+
+/* Info Panel */
+.infoPanel { display: flex; flex-direction: column; gap: 16px; }
+.badges { display: flex; gap: 6px; flex-wrap: wrap; }
+.name { font-size: 22px; font-weight: 700; color: var(--text-primary); line-height: 1.35; }
+
+/* Flash Box */
+.flashBox {
+  background: linear-gradient(135deg, #fff8f0, #fff3e0);
+  border: 1.5px solid #ffcc80; border-radius: var(--radius-md); padding: 16px;
+}
+.flashBoxHeader { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; margin-bottom: 12px; }
+.livePulse {
+  width: 8px; height: 8px; border-radius: 50%; background: var(--accent);
+  box-shadow: 0 0 0 3px rgba(255,97,97,0.3); animation: pulse 1.5s infinite;
+}
+@keyframes pulse {
+  0%,100% { box-shadow: 0 0 0 3px rgba(255,97,97,0.3); }
+  50% { box-shadow: 0 0 0 6px rgba(255,97,97,0.1); }
+}
+.flashLabel { font-size: 13px; font-weight: 600; color: var(--text-secondary); }
+.flashTimer { display: flex; gap: 4px; margin-left: auto; }
+.timerBlock {
+  display: flex; flex-direction: column; align-items: center;
+  background: var(--text-primary); color: #fff; border-radius: 4px;
+  padding: 4px 8px; min-width: 36px; font-size: 16px; font-weight: 800;
+  font-variant-numeric: tabular-nums;
+}
+.timerBlock small { font-size: 9px; font-weight: 600; color: rgba(255,255,255,0.6); text-transform: uppercase; }
+
+.stockBar { position: relative; height: 6px; background: #ffe0b2; border-radius: 3px; margin-top: 12px; overflow: hidden; }
+.stockBarFill { position: absolute; left: 0; top: 0; height: 100%; background: var(--accent); border-radius: 3px; transition: width 0.5s ease; }
+.stockText { font-size: 12px; color: var(--accent); font-weight: 600; margin-top: 4px; display: block; }
+
+/* Prices */
+.priceGroup { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+.price { font-size: 26px; font-weight: 800; color: var(--text-primary); }
+.flashPrice { font-size: 28px; font-weight: 800; color: var(--accent); }
+.origPrice { font-size: 17px; color: var(--text-light); text-decoration: line-through; }
+.discountBadge {
+  background: #e8f5e9; color: var(--success); font-size: 13px; font-weight: 700;
+  padding: 2px 8px; border-radius: 3px;
+}
+
+.upcomingBox {
+  background: var(--primary-light); border: 1px solid #90caf9; border-radius: var(--radius-sm);
+  padding: 10px 14px; font-size: 13px; color: var(--primary); font-weight: 500;
+}
+
+.desc { font-size: 14px; color: var(--text-secondary); line-height: 1.7; }
+
+.stockStatus { font-size: 14px; font-weight: 500; }
+.inStock { color: var(--success); }
+.outStock { color: var(--accent); }
+
+.actions { display: flex; gap: 12px; }
+.cartBtn { flex: 1; }
+.buyBtn { flex: 1; }
+.cancelBtn { align-self: flex-start; color: var(--text-secondary); font-size: 13px; margin-top: -8px; }
+
+/* Address Form */
+.addressForm {
+  background: var(--bg); border-radius: var(--radius-md); padding: 20px;
+  border: 1.5px solid var(--border);
+}
+.addressTitle { font-size: 15px; font-weight: 700; margin-bottom: 16px; color: var(--text-primary); }
+.formRow { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+
+@media (max-width: 900px) {
+  .layout { grid-template-columns: 1fr; }
+  .imageSection { position: static; }
+  .formRow { grid-template-columns: 1fr; }
+}

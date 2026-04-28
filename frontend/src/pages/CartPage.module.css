@@ -1,0 +1,57 @@
+.page { padding: 24px 0 48px; }
+.pageTitle { font-size: 20px; font-weight: 700; margin-bottom: 20px; color: var(--text-primary); }
+.layout { display: grid; grid-template-columns: 1fr 340px; gap: 20px; align-items: start; }
+
+.itemsCol { display: flex; flex-direction: column; gap: 12px; }
+.cartItem {
+  background: var(--bg-white); border-radius: var(--radius-md); box-shadow: var(--shadow-sm);
+  padding: 16px; display: flex; gap: 16px; align-items: flex-start;
+}
+.itemImage { width: 90px; height: 90px; object-fit: contain; border-radius: var(--radius-sm); border: 1px solid var(--border); flex-shrink: 0; }
+.itemInfo { flex: 1; min-width: 0; }
+.itemName { font-size: 14px; font-weight: 500; color: var(--text-primary); display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; text-decoration: none; }
+.itemName:hover { color: var(--primary); }
+.itemBrand { font-size: 12px; color: var(--text-light); margin-top: 2px; }
+.itemPriceRow { display: flex; align-items: center; gap: 8px; margin-top: 6px; }
+.itemPrice { font-size: 16px; font-weight: 700; color: var(--text-primary); }
+.itemMrp { font-size: 13px; color: var(--text-light); text-decoration: line-through; }
+
+.itemActions { display: flex; flex-direction: column; align-items: flex-end; gap: 10px; flex-shrink: 0; }
+.qtyControl { display: flex; align-items: center; border: 1px solid var(--border); border-radius: var(--radius-sm); overflow: hidden; }
+.qtyBtn { width: 32px; height: 32px; background: var(--bg); border: none; font-size: 16px; font-weight: 600; cursor: pointer; color: var(--text-primary); transition: var(--transition); }
+.qtyBtn:hover:not(:disabled) { background: var(--primary-light); color: var(--primary); }
+.qtyBtn:disabled { color: var(--text-light); cursor: not-allowed; }
+.qty { width: 36px; text-align: center; font-size: 14px; font-weight: 600; }
+.itemTotal { font-size: 15px; font-weight: 700; color: var(--text-primary); }
+.removeBtn { background: none; border: none; font-size: 12px; color: var(--accent); cursor: pointer; font-weight: 500; text-decoration: underline; }
+
+/* Summary */
+.summaryCol { position: sticky; top: calc(var(--nav-height) + 16px); }
+.summary { background: var(--bg-white); border-radius: var(--radius-md); box-shadow: var(--shadow-sm); padding: 20px; }
+.summaryTitle { font-size: 14px; font-weight: 700; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 16px; }
+.summaryRow { display: flex; justify-content: space-between; font-size: 14px; color: var(--text-primary); margin-bottom: 12px; }
+.free { color: var(--success); font-weight: 600; }
+.summaryDivider { height: 1px; background: var(--border); margin: 8px 0 12px; }
+.totalRow { font-size: 16px; font-weight: 700; }
+.savingText { font-size: 12px; color: var(--success); font-weight: 500; margin-bottom: 12px; }
+.checkoutBtn { margin-top: 8px; padding: 14px; font-size: 15px; }
+.continueShopping { display: block; text-align: center; font-size: 13px; color: var(--primary); margin-top: 10px; text-decoration: none; }
+.continueShopping:hover { text-decoration: underline; }
+
+/* Modal */
+.overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.5); display: flex; align-items: center; justify-content: center; z-index: 2000; padding: 20px; }
+.modal { background: var(--bg-white); border-radius: var(--radius-lg); width: 100%; max-width: 520px; box-shadow: var(--shadow-lg); animation: fadeUp 0.2s ease; }
+@keyframes fadeUp { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
+.modalHeader { display: flex; justify-content: space-between; align-items: center; padding: 16px 20px; border-bottom: 1px solid var(--border); }
+.modalHeader h3 { font-size: 16px; font-weight: 700; }
+.closeBtn { background: none; border: none; cursor: pointer; color: var(--text-secondary); display: flex; align-items: center; padding: 4px; border-radius: 4px; }
+.closeBtn:hover { background: var(--bg); color: var(--text-primary); }
+.modalBody { padding: 20px; }
+.modalFooter { padding: 16px 20px; border-top: 1px solid var(--border); display: flex; gap: 10px; justify-content: flex-end; }
+.formRow { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+
+@media (max-width: 768px) {
+  .layout { grid-template-columns: 1fr; }
+  .summaryCol { position: static; }
+  .formRow { grid-template-columns: 1fr; }
+}
