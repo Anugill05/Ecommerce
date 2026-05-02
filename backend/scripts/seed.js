@@ -11,13 +11,36 @@ const Cart = require("../models/Cart");
 const fromNow = (m) => new Date(Date.now() + m * 60 * 1000);
 const minsAgo = (m) => new Date(Date.now() - m * 60 * 1000);
 
+// ── USERS (UPDATED TO EMAIL) ──────────────────────────────────────────────────
 const USERS = [
-  { phone: process.env.ADMIN_PHONE || "9999999999", name: "Admin User", role: "admin", isVerified: true, password: process.env.ADMIN_PASSWORD || "Admin@123" },
-  { phone: "9876543210", name: "Arjun Sharma", role: "user", isVerified: true },
-  { phone: "9123456789", name: "Priya Mehta", role: "user", isVerified: true },
-  { phone: "9988776655", name: "Rohit Verma", role: "user", isVerified: true },
+  {
+    email: process.env.ADMIN_EMAIL || "admin@flashkart.com",
+    name: "Admin User",
+    role: "admin",
+    isVerified: true,
+    password: process.env.ADMIN_PASSWORD || "Admin@123",
+  },
+  {
+    email: "arjun.sharma@example.com",
+    name: "Arjun Sharma",
+    role: "user",
+    isVerified: true,
+  },
+  {
+    email: "priya.mehta@example.com",
+    name: "Priya Mehta",
+    role: "user",
+    isVerified: true,
+  },
+  {
+    email: "rohit.verma@example.com",
+    name: "Rohit Verma",
+    role: "user",
+    isVerified: true,
+  },
 ];
 
+// ── PRODUCTS (UNCHANGED) ──────────────────────────────────────────────────────
 const PRODUCTS = [
   {
     name: "Sony WH-1000XM5 Wireless Headphones",
@@ -108,27 +131,43 @@ const PRODUCTS = [
   },
 ];
 
+// ── SEED FUNCTION ─────────────────────────────────────────────────────────────
 const seed = async () => {
   await mongoose.connect(process.env.MONGO_URI);
   console.log("MongoDB connected");
+
   const redis = getRedis();
   await redis.connect();
   console.log("Redis connected\n");
 
-  await Promise.all([User.deleteMany({}), Product.deleteMany({}), Order.deleteMany({}), Cart.deleteMany({})]);
+  await Promise.all([
+    User.deleteMany({}),
+    Product.deleteMany({}),
+    Order.deleteMany({}),
+    Cart.deleteMany({}),
+  ]);
   console.log("Collections cleared");
 
   for (const u of USERS) {
     const doc = { ...u };
     if (doc.password) doc.password = await bcrypt.hash(doc.password, 12);
     const user = await User.create(doc);
-    console.log(`User: ${user.phone} (${user.role})`);
+    console.log(`User: ${user.email} (${user.role})`);
   }
 
   console.log("\nSeeding products...");
   const createdProducts = [];
+
   for (const pd of PRODUCTS) {
-    const slug = pd.name.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "") + "-" + Date.now() + Math.floor(Math.random() * 1000);
+    const slug =
+      pd.name
+        .toLowerCase()
+        .replace(/[^a-z0-9]+/g, "-")
+        .replace(/(^-|-$)/g, "") +
+      "-" +
+      Date.now() +
+      Math.floor(Math.random() * 1000);
+
     const product = await Product.create({ ...pd, slug });
     createdProducts.push(product);
     console.log(`  + ${product.name}`);
@@ -136,6 +175,7 @@ const seed = async () => {
 
   console.log("\nSyncing flash sales to Redis...");
   let flashCount = 0;
+
   for (const product of createdProducts) {
     const flash = product.flashSale;
     if (flash && flash.isActive && flash.flashStock > 0) {
@@ -150,9 +190,13 @@ const seed = async () => {
   console.log("SEED COMPLETE");
   console.log("=".repeat(50));
   console.log(`Users: ${USERS.length} | Products: ${createdProducts.length} | Flash sales: ${flashCount}`);
-  console.log(`\nAdmin: ${process.env.ADMIN_PHONE || "9999999999"} / ${process.env.ADMIN_PASSWORD || "Admin@123"}`);
-  console.log("Test users: 9876543210 | 9123456789 | 9988776655");
+  console.log(`\nAdmin: ${process.env.ADMIN_EMAIL || "admin@flashkart.com"} / ${process.env.ADMIN_PASSWORD || "Admin@123"}`);
+  console.log("Test users: arjun.sharma@example.com | priya.mehta@example.com | rohit.verma@example.com");
+
   process.exit(0);
 };
 
-seed().catch((err) => { console.error("Seed failed:", err); process.exit(1); });
+seed().catch((err) => {
+  console.error("Seed failed:", err);
+  process.exit(1);
+});

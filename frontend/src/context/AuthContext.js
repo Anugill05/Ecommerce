@@ -20,7 +20,9 @@ export const AuthProvider = ({ children }) => {
       localStorage.removeItem("fk_token");
       localStorage.removeItem("fk_user");
       setUser(null);
-    } finally { setLoading(false); }
+    } finally {
+      setLoading(false);
+    }
   }, []);
 
   useEffect(() => { bootstrap(); }, [bootstrap]);
@@ -39,8 +41,11 @@ export const AuthProvider = ({ children }) => {
 
   return (
     <AuthContext.Provider value={{
-      user, loading, login, logout,
-      isAdmin: user?.role === "admin",
+      user,
+      loading,
+      login,
+      logout,
+      isAdmin:   user?.role === "admin",
       isLoggedIn: !!user,
     }}>
       {children}
