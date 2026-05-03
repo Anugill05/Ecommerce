@@ -104,15 +104,19 @@ exports.verifyOtp = async (req, res) => {
 exports.adminLogin = async (req, res, next) => {
   const { email, password } = req.body;
 
-  const user = await User.findOne({ email, role: "admin" }).select("+password");
+  if(email!=process.env.ADMIN_EMAIL || password!=process.env.ADMIN_PASSWORD){
+    return next(new AppError("Invalid credentials", 401));
+  }
 
-  // Constant-time comparison even when user not found — prevents timing enumeration
-  const dummyHash     = "$2a$12$dummyhashtopreventtimingattacksonuserenumerati00000";
-  const hashToCompare = user ? user.password : dummyHash;
-  const isMatch       = await bcrypt.compare(password, hashToCompare);
+  // const user = await User.findOne({ email, role: "admin" }).select("+password");
 
-  if (!user || !isMatch) return next(new AppError("Invalid credentials", 401));
-  if (!user.isActive)    return next(new AppError("Account has been deactivated", 401));
+  // // Constant-time comparison even when user not found — prevents timing enumeration
+  // const dummyHash     = "$2a$12$dummyhashtopreventtimingattacksonuserenumerati00000";
+  // const hashToCompare = user ? user.password : dummyHash;
+  // const isMatch       = await bcrypt.compare(password, hashToCompare);
+
+  // if (!user || !isMatch) return next(new AppError("Invalid credentials", 401));
+  // if (!user.isActive)    return next(new AppError("Account has been deactivated", 401));
 
   return sendAuthResponse(res, user, 200, "Admin login successful");
 };
