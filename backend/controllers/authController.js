@@ -104,11 +104,16 @@ exports.verifyOtp = async (req, res) => {
 exports.adminLogin = async (req, res, next) => {
   const { email, password } = req.body;
 
-  // Fetch admin user
   const user = await User.findOne({ email, role: "admin" }).select("+password");
 
-  // Simple string comparison
-  if (!user || user.password !== password) {
+  if (!user) {
+    return next(new AppError("Invalid credentials", 401));
+  }
+
+  // Correct comparison
+  const isMatch = await bcrypt.compare(password, user.password);
+
+  if (!isMatch) {
     return next(new AppError("Invalid credentials", 401));
   }
 
