@@ -15,7 +15,6 @@
     "start": "react-scripts start",
     "build": "react-scripts build"
   },
-  "proxy": "https://ecommerce-ca6k.onrender.com",
   "browserslist": {
     "production": [
       ">0.2%",

@@ -14,7 +14,7 @@ const minsAgo = (m) => new Date(Date.now() - m * 60 * 1000);
 // ── USERS (UPDATED TO EMAIL) ──────────────────────────────────────────────────
 const USERS = [
   {
-    email: process.env.ADMIN_EMAIL || "admin@flashkart.com",
+    email: process.env.ADMIN_EMAIL || "admin@gmail.com",
     name: "Admin User",
     role: "admin",
     isVerified: true,
@@ -46,7 +46,7 @@ const PRODUCTS = [
     name: "Sony WH-1000XM5 Wireless Headphones",
     description: "Industry-leading noise cancellation with 30-hour battery life. Multipoint connection, precise voice pickup for hands-free calling.",
     price: 29990, mrp: 34990, stock: 80, category: "Electronics", brand: "Sony",
-    images: ["https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=600&q=80"],
+    images: ["https://images.unsplash.com/photo-1505740420928-5e560c06d30c?w=600&q=80"],
     isFeatured: true, tags: ["headphones", "wireless", "noise-cancelling"],
     flashSale: { isActive: true, startTime: minsAgo(1), endTime: fromNow(90), salePrice: 21999, flashStock: 20, flashSold: 0 },
   },
@@ -149,9 +149,7 @@ const seed = async () => {
   console.log("Collections cleared");
 
   for (const u of USERS) {
-    const doc = { ...u };
-    if (doc.password) doc.password = await bcrypt.hash(doc.password, 12);
-    const user = await User.create(doc);
+    const user = await User.create(u); // FIXED: no manual hashing
     console.log(`User: ${user.email} (${user.role})`);
   }
 
