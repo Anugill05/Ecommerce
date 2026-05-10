@@ -25,6 +25,7 @@ export default function ProductCard({ product }) {
 
   const redisStock = product.redisFlashStock;
   const stockLow = redisStock !== null && redisStock !== undefined && redisStock <= 5;
+  const stockPct = flash?.flashStock ? Math.min(100, Math.max(0, (redisStock / flash.flashStock) * 100)) : 100;
 
   return (
     <Link to={`/products/${product._id}`} className={styles.card}>
@@ -35,48 +36,63 @@ export default function ProductCard({ product }) {
           className={styles.image}
           loading="lazy"
         />
+        {discount > 0 && (
+          <div className={styles.discountBadge}>-{discount}%</div>
+        )}
         {isFlashLive && !isExpired && (
-          <div className={styles.flashBadge}>Flash Sale</div>
+          <div className={styles.flashBadge}>
+            <svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/>
+            </svg>
+            Flash
+          </div>
         )}
         {product.isFeatured && !isFlashLive && (
           <div className={styles.featuredBadge}>Featured</div>
         )}
+        <div className={styles.overlay}>
+          <span className={styles.viewBtn}>View Details</span>
+        </div>
       </div>
 
       <div className={styles.body}>
-        <p className={styles.brand}>{product.brand}</p>
+        {product.brand && <p className={styles.brand}>{product.brand}</p>}
         <h3 className={styles.name}>{product.name}</h3>
 
         <div className={styles.priceRow}>
           <span className={`${styles.price} ${isFlashLive ? styles.flashPrice : ""}`}>
-            &#8377;{displayPrice.toLocaleString("en-IN")}
+            ₹{displayPrice.toLocaleString("en-IN")}
           </span>
           {discount > 0 && (
-            <>
-              <span className={styles.mrp}>&#8377;{displayMrp.toLocaleString("en-IN")}</span>
-              <span className={styles.discount}>{discount}% off</span>
-            </>
+            <span className={styles.mrp}>₹{displayMrp.toLocaleString("en-IN")}</span>
           )}
         </div>
 
-        {isFlashLive && !isExpired && (
+        {isFlashLive && !isExpired ? (
           <div className={styles.flashFooter}>
             <div className={styles.timer}>
-              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+              <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
                 <circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>
               </svg>
               {timeLeft}
             </div>
-            {stockLow && (
+            {stockLow && redisStock > 0 && (
               <span className={styles.stockAlert}>Only {redisStock} left!</span>
             )}
+            {redisStock <= 0 && (
+              <span className={styles.soldOut}>Sold Out</span>
+            )}
           </div>
-        )}
-
-        {flash?.isActive && !isFlashLive && new Date(flash.startTime) > now && (
+        ) : flash?.isActive && !isFlashLive && new Date(flash.startTime) > now ? (
           <p className={styles.upcoming}>
-            Sale starts {new Date(flash.startTime).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}
+            🕐 Starts {new Date(flash.startTime).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}
           </p>
+        ) : null}
+
+        {isFlashLive && !isExpired && flash?.flashStock && (
+          <div className={styles.stockBar}>
+            <div className={styles.stockBarFill} style={{ width: `${stockPct}%` }} />
+          </div>
         )}
       </div>
     </Link>
